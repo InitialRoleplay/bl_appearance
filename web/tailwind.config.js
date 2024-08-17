@@ -18,15 +18,15 @@ export default {
   theme: {
     extend: {
         colors: {
-            'primary': '#252525',
-            'secondary': '#3C3C3C',
-            'accent': '#8685ef',
+            'primary': '#121212',
+            'secondary': '#2A2A2A',
+            'accent': '#CC0000',
 
-            'success': '#7FEB9D',
-            'error': '#E5283E',
+            'success': '#3de16a',
+            'error': '#d91a30',
 
-            'txt-primary': '#faf7ff',
-            'txt-secondary': '#2b2b2b',
+            'txt-primary': '#fff',
+            'txt-secondary': '#000',
         },
     },
   },
