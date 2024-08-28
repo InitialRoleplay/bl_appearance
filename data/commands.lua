@@ -13,7 +13,7 @@ lib.addCommand('appearance', {
             optional = true
         }
     },
-    restricted = 'group.admin'
+    restricted = 'group.dev'
 }, function(source, args, raw)
     local target = args.target or source
     local type = args.type or 'appearance'

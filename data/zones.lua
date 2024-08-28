@@ -4,7 +4,7 @@ local stores = {
     {
         type = 'appearance',
         coords = vector4(455.56, -990.74, 30.69, 84.66),
-        jobs = {'police'}
+        jobs = { 'police' }
     },
     {
         type = 'clothing',
@@ -169,7 +169,7 @@ local function setupZones()
         end
 
         if not textUi then
-            sprites[#sprites+1] = exports.bl_sprites:sprite({
+            sprites[#sprites + 1] = exports.bl_sprites:sprite({
                 coords = v.coords,
                 shape = 'hex',
                 key = key,
@@ -217,7 +217,7 @@ local function createBlips()
             BeginTextCommandSetBlipName('STRING')
             AddTextComponentString(blipname)
             EndTextCommandSetBlipName(blip)
-            blips[#blips+1] = blip
+            blips[#blips + 1] = blip
         end
     end
 end
@@ -242,5 +242,4 @@ RegisterCommand('+openAppearance', function()
     if not currentZone then return end
     TriggerEvent('bl_appearance:client:useZone', currentZone.type)
 end, false)
-
 RegisterKeyMapping('+openAppearance', 'Open Appearance', 'keyboard', key)

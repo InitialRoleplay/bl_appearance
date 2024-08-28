@@ -1,7 +1,7 @@
 import { TAppearance, TAppearanceZone, TMenuTypes } from "@typings/appearance"
 import { openMenu } from "./menu"
 import { setPlayerPedAppearance } from "./appearance/setters"
-import { triggerServerCallback, getFrameworkID, Delay, bl_bridge, ped, delay, format, updatePed } from "@utils"
+import { triggerServerCallback, getFrameworkID, Delay, bl_bridge, ped, delay, format } from "@utils"
 import { QBBridge } from "./bridge/qb"
 import { ESXBridge } from "./bridge/esx"
 import { illeniumCompat } from "./compat/illenium"
@@ -28,8 +28,9 @@ exports('GetPlayerPedAppearance', async (frameworkID: string) => {
 
 exports('InitialCreation', async (cb?: Function) => {
     // The first argument needs to be type of TAppearanceZone meaning it needs a coords property, but in this case it's not used
-    await openMenu({ type: "appearance", coords: [0, 0, 0, 0] }, true)
-    if (cb) cb()
+    await openMenu({ type: "appearance", coords: [0, 0, 0, 0] }, true);
+    if (cb) return cb();
+    emit('um-tutorial:client:openTutorial');
 })
 
 on('bl_appearance:client:useZone', (zone: TAppearanceZone) => {

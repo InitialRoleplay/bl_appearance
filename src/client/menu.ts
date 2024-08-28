@@ -1,6 +1,6 @@
 import { getFrameworkID, requestLocale, sendNUIEvent, triggerServerCallback, updatePed, ped, getPlayerData, getJobInfo, getPlayerGenderModel } from "@utils"
 import { startCamera, stopCamera } from "./camera"
-import type { TAppearanceZone, TMenuTypes } from "@typings/appearance"
+import type { TAppearanceZone } from "@typings/appearance"
 import { Outfit } from "@typings/outfits"
 import { Send } from "@events"
 import { getAppearance, getTattooData } from "./appearance/getters"

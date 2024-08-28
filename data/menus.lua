@@ -5,22 +5,22 @@ local menus = {
 	},
 
 	clothing = {
-		tabs = { "clothes", "accessories"},
+		tabs = { "clothes", "accessories" },
 		allowExit = true,
 	},
 
 	barber = {
-		tabs =  { "hair", "face", "makeup" },
+		tabs = { "hair", "face", "makeup" },
 		allowExit = true,
 	},
 
 	surgeon = {
-		tabs =  { "heritage", "face"},
+		tabs = { "heritage", "face" },
 		allowExit = true,
 	},
 
 	tattoos = {
-		tabs = {"tattoos"},
+		tabs = { "tattoos" },
 		allowExit = true,
 	},
 

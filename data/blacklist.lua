@@ -11,33 +11,11 @@
 local BLACKLIST = {
 	jobs = {
 		["police"] = {
-			models = {
-				"csb_cop",
-				"s_f_y_cop_01",
-				"s_m_y_hwaycop_01",
-				"s_f_y_sheriff_01",
-				"s_m_y_sheriff_01",
-				"s_f_y_ranger_01",
-				"s_m_y_ranger",
-			},
-			-- add eveyrthign else you need such as the props etc
-		},
-		-- add any other jobs in here
-	},
-	gangs = {
-		["example"] = {
-			drawables = {
-				masks = {
-					textures = {
-						[194] = { 0 },
-					},
-					values = {},
-				},
-			},
 			-- add eveyrthign else you need such as the props etc
 		},
 	},
-    groups = {}
+	gangs = {},
+    groups = {},
 }
 
 -- ===========================================================================
