@@ -2,11 +2,6 @@
 
 local stores = {
     {
-        type = 'appearance',
-        coords = vector4(455.56, -990.74, 30.69, 84.66),
-        jobs = { 'police' }
-    },
-    {
         type = 'clothing',
         coords = vector4(1693.2, 4828.11, 42.07, 188.66),
     },
@@ -119,69 +114,36 @@ local stores = {
     {
         type = 'tattoos',
         coords = vector4(-294.24, 6200.12, 31.49, 195.72),
-    },
-    {
-        type = 'surgeon',
-        coords = vector4(298.78, -572.81, 43.26, 114.27),
     }
 }
 
-local key = Config.openControl
-local control = Config.openControl
-local textUi = Config.textUi and exports.bl_bridge:textui()
 local currentZone = nil
-local sprites = {}
 
 local function setupZones()
-    if not textUi and GetResourceState('bl_sprites') == 'missing' then
-        return
-    end
-
-    for _, v in pairs(stores) do
-        local point = lib.points.new({
-            coords = v.coords,
-            distance = 3.0,
+    for id, v in pairs(stores) do
+        exports.sleepless_interact:addCoords({
+            id = "appearance_" .. v.type .. "_" .. id,
+            coords = vector3(v.coords.x, v.coords.y, v.coords.z),
+            onEnter = function()
+                currentZone = v
+            end,
+            onExit = function()
+                currentZone = nil
+            end,
+            options = {
+                {
+                    label = currentZone and ((currentZone.type == 'barber' and "Barbier") or (currentZone.type == 'tattoos' and "Tattoueur") or (currentZone.type == 'clothing' and "Magasin de vêtements") or (currentZone.type == 'surgeon' and "Chirurgien")) or "Magasin de vêtements",
+                    icon = "tshirt",
+                    onSelect =function(data)
+                        if not currentZone then return end
+                        TriggerEvent('bl_appearance:client:useZone', currentZone.type)
+                    end
+                }
+            },
+            renderDistance = 10.0,
+            activeDistance = 3.0,
+            cooldown = 1500
         })
-
-        function point:onEnter()
-            currentZone = v
-            if textUi then
-                local prefix = "[" .. control .. "] - "
-                local displayText = ""
-                if currentZone.type == 'barber' then
-                    displayText = "Barber Shop"
-                elseif currentZone.type == 'tattoos' then
-                    displayText = "Tattoo Parlor"
-                elseif currentZone.type == 'clothing' then
-                    displayText = "Clothing Store"
-                elseif currentZone.type == 'surgeon' then
-                    displayText = "Surgeon"
-                end
-                textUi.showTextUI(prefix .. displayText, 'left')
-            end
-        end
-
-        function point:onExit()
-            currentZone = nil
-            if textUi then
-                textUi.hideTextUI()
-            end
-        end
-
-        if not textUi then
-            sprites[#sprites + 1] = exports.bl_sprites:sprite({
-                coords = v.coords,
-                shape = 'hex',
-                key = key,
-                distance = 3.0,
-                onEnter = function()
-                    currentZone = v
-                end,
-                onExit = function()
-                    currentZone = nil
-                end
-            })
-        end
     end
 end
 
@@ -229,17 +191,5 @@ AddEventHandler('onResourceStop', function(resource)
         for _, blip in pairs(blips) do
             RemoveBlip(blip)
         end
-
-        if not textUi then
-            for _, sprite in pairs(sprites) do
-                sprite:removeSprite()
-            end
-        end
     end
 end)
-
-RegisterCommand('+openAppearance', function()
-    if not currentZone then return end
-    TriggerEvent('bl_appearance:client:useZone', currentZone.type)
-end, false)
-RegisterKeyMapping('+openAppearance', 'Open Appearance', 'keyboard', key)
