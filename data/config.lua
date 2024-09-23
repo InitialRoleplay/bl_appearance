@@ -1,7 +1,7 @@
 Config = {
     locale = 'fr',
     openControl = 'E',
-    previousClothing = 'qb', -- 'illenium' | 'qb' | 'esx' | 'fivem-appearance'
+    previousClothing = 'illenium', -- 'illenium' | 'qb' | 'esx' | 'fivem-appearance'
     textUi = true, -- if true, uses textUI | if false, uses sprite
     outfitItem = 'clothes_outfits', -- Item given to the player when they want to make outfit an item to use
 }
@@ -12,5 +12,6 @@ end)
 
 ---@param state boolean If true, hides the HUD. If false, shows the HUD.
 exports('hideHud', function(state)
-    TriggerEvent('qbx_hud:client:toggleHud', state)
+    local event = state and 'ts_hud:client:showHud' or 'ts_hud:client:hideHUD'
+    TriggerEvent(event)
 end)
