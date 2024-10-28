@@ -64,7 +64,7 @@
             zoneIndex: 0,
             dlcIndex: dlcWithTattoos !== -1 ? dlcWithTattoos : 0,
             tattoo: options[0].dlcs[dlcWithTattoos].tattoos[0],
-            opacity: 0.1,
+            opacity: 1,
             id: randomID(),
         }];
 
@@ -86,7 +86,7 @@
         const dlcTattoos = options[newZoneIndex].dlcs[0]?.tattoos;
 
         if (dlcTattoos?.length) playerTattoo.tattoo = dlcTattoos[0]
-        playerTattoo.opacity = 0.1;
+        playerTattoo.opacity = 1;
 
         TATTOOS.setPlayerTattoos(playerTattoos);
     }
@@ -100,7 +100,7 @@
         const dlcTattoos = options[zoneIndex].dlcs[newDLCIndex]?.tattoos;
 
         if (dlcTattoos?.length) playerTattoo.tattoo = dlcTattoos[0]
-        playerTattoo.opacity = 0.1;
+        playerTattoo.opacity = 1;
 
         TATTOOS.setPlayerTattoos(playerTattoos);
     }

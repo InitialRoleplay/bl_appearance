@@ -1,15 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 
-
-
-// --primary: #2c2c2c;
-// --secondary: #424050;
-// --accent: #8685ef;
-
-// --text-primary: #faf7ff;
-// --text-secondary: #2b2b2b;
-
-
 export default {
     content: [
         "./index.html",
@@ -18,12 +8,12 @@ export default {
   theme: {
     extend: {
         colors: {
-            'primary': '#252525',
-            'secondary': '#3C3C3C',
-            'accent': '#8685ef',
+            'primary': '#2c2c2c',
+            'secondary': '#424050',
+            'accent': '#d50000',
 
-            'success': '#7FEB9D',
-            'error': '#E5283E',
+            'success': '#00ff00',
+            'error': '#FF0000',
 
             'txt-primary': '#faf7ff',
             'txt-secondary': '#2b2b2b',

@@ -22,12 +22,6 @@
         class="w-screen h-screen absolute top-0 left-0 radial-background grid place-items-center -z-50"
         transition:fade
     >
-        <!-- <div
-            transition:fade|global
-            style="height: {radius}%;"
-            class="absolute aspect-square border-[0.25vh] border-primary/20 rounded-full pointer-events-none -z-50"
-        /> -->
-
         <Nav />
         <Menu />
         <CamHandler {radius} />

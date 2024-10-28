@@ -7,12 +7,6 @@
     import type { TValue, THeadOverlay } from '@typings/apperance';
     import Percentage from '@components/micro/Percentage.svelte';
 
-    let position = { x: 0.5, y: 0.5 };
-    function handleChange(event) {
-        const newValue = event.detail;
-        console.log('New position:', newValue);
-    }
-
     $: data = $APPEARANCE.headStructure;
     let eyeColor = ($APPEARANCE.headOverlay?.EyeColor as TValue) || null;
     $: headOverlay = $APPEARANCE.headOverlay as THeadOverlay;
@@ -24,84 +18,49 @@
 {:else}
     {#if data.Nose_Width}
         <Wrapper label={$LOCALE.NOSE_TITLE}>
-            <svelte:fragment slot="primary-start">{$LOCALE.WIDTH_SUBTITLE}</svelte:fragment>
             <svelte:fragment slot="primary">
-                <Slider
-                    bind:value={data.Nose_Width.value}
+                <Percentage
+                    bind:x={data.Nose_Width.value}
+                    bind:y={data.Nose_Peak_Height.value}
                     min={-1.0}
                     max={1.0}
                     step={0.01}
-                    on:change={() =>
-                        APPEARANCE.setHeadStructure(data.Nose_Width)}
+                    bind:width_locale={$LOCALE.WIDTH_SUBTITLE}
+                    bind:height_locale={$LOCALE.PEAKHEIGHT_SUBTITLE}
+                    on:change={() => {
+                        APPEARANCE.setHeadStructure(data.Nose_Width);
+                        APPEARANCE.setHeadStructure(data.Nose_Peak_Height);
+                    }}
                 />
             </svelte:fragment>
-
-            <svelte:fragment slot="secondary-start">{$LOCALE.PEAKHEIGHT_SUBTITLE}</svelte:fragment
-            >
-
             <svelte:fragment slot="secondary">
-                <Slider
-                    bind:value={data.Nose_Peak_Height.value}
+                <Percentage
+                    bind:x={data.Nose_Peak_Lenght.value}
+                    bind:y={data.Nose_Bone_Height.value}
                     min={-1.0}
                     max={1.0}
                     step={0.01}
-                    on:change={() =>
-                        APPEARANCE.setHeadStructure(data.Nose_Peak_Height)}
+                    bind:width_locale={$LOCALE.PEAKLENGTH_SUBTITLE}
+                    bind:height_locale={$LOCALE.BONEHEIGHT_SUBTITLE}
+                    on:change={() => {
+                        APPEARANCE.setHeadStructure(data.Nose_Peak_Lenght);
+                        APPEARANCE.setHeadStructure(data.Nose_Bone_Height);
+                    }}
                 />
             </svelte:fragment>
-
-            <svelte:fragment slot="tertiary-start">{$LOCALE.PEAKLENGTH_SUBTITLE}</svelte:fragment>
-
             <svelte:fragment slot="tertiary">
-                <Slider
-                    bind:value={data.Nose_Peak_Lenght.value}
+                <Percentage
+                    bind:x={data.Nose_Peak_Lowering.value}
+                    bind:y={data.Nose_Bone_Twist.value}
                     min={-1.0}
                     max={1.0}
                     step={0.01}
-                    on:change={() =>
-                        APPEARANCE.setHeadStructure(data.Nose_Peak_Lenght)}
-                />
-            </svelte:fragment>
-
-            <svelte:fragment slot="quaternary-start"
-                >{$LOCALE.BONEHEIGHT_SUBTITLE}</svelte:fragment
-            >
-
-            <svelte:fragment slot="quaternary">
-                <Slider
-                    bind:value={data.Nose_Bone_Height.value}
-                    min={-1.0}
-                    max={1.0}
-                    step={0.01}
-                    on:change={() =>
-                        APPEARANCE.setHeadStructure(data.Nose_Bone_Height)}
-                />
-            </svelte:fragment>
-
-            <svelte:fragment slot="quinary-start">{$LOCALE.PEAKLOWERING_SUBTITLE}</svelte:fragment
-            >
-
-            <svelte:fragment slot="quinary">
-                <Slider
-                    bind:value={data.Nose_Peak_Lowering.value}
-                    min={-1.0}
-                    max={1.0}
-                    step={0.01}
-                    on:change={() =>
-                        APPEARANCE.setHeadStructure(data.Nose_Peak_Lowering)}
-                />
-            </svelte:fragment>
-
-            <svelte:fragment slot="senary-start">{$LOCALE.BONETWIST_SUBTITLE}</svelte:fragment>
-
-            <svelte:fragment slot="senary">
-                <Slider
-                    bind:value={data.Nose_Bone_Twist.value}
-                    min={-1.0}
-                    max={1.0}
-                    step={0.01}
-                    on:change={() =>
-                        APPEARANCE.setHeadStructure(data.Nose_Bone_Twist)}
+                    bind:width_locale={$LOCALE.PEAKLOWERING_SUBTITLE}
+                    bind:height_locale={$LOCALE.BONETWIST_SUBTITLE}
+                    on:change={() => {
+                        APPEARANCE.setHeadStructure(data.Nose_Peak_Lowering);
+                        APPEARANCE.setHeadStructure(data.Nose_Bone_Twist);
+                    }}
                 />
             </svelte:fragment>
         </Wrapper>
@@ -109,43 +68,39 @@
 
     {#if data.EyeBrown_Height}
         <Wrapper label={$LOCALE.EYEBROW_TITLE}>
-            <Percentage
-                slot="primary"
-                bind:value={position}
-                width={448}
-                height={150}
-                gridCellsX={8}
-                gridCellsY={8}
-                on:change={handleChange}
-            />
+            <svelte:fragment slot="primary">
+                <Percentage
+                    bind:x={data.EyeBrown_Height.value}
+                    bind:y={data.EyeBrown_Forward.value}
+                    min={-1.0}
+                    max={1.0}
+                    step={0.01}
+                    bind:width_locale={$LOCALE.HEIGHT_SUBTITLE}
+                    bind:height_locale={$LOCALE.DEPTH_SUBTITLE}
+                    on:change={() => {
+                        APPEARANCE.setHeadStructure(data.EyeBrown_Height);
+                        APPEARANCE.setHeadStructure(data.EyeBrown_Forward);
+                    }}
+                />
+            </svelte:fragment>
         </Wrapper>
     {/if}
 
     {#if data.Cheeks_Bone_High}
         <Wrapper label={$LOCALE.CHEEKS_TITLE}>
-            <svelte:fragment slot="primary-start">{$LOCALE.BONEHEIGHT_SUBTITLE}</svelte:fragment>
-
             <svelte:fragment slot="primary">
-                <Slider
-                    bind:value={data.Cheeks_Bone_High.value}
+                <Percentage
+                    bind:x={data.Cheeks_Bone_High.value}
+                    bind:y={data.Cheeks_Bone_Width.value}
                     min={-1.0}
                     max={1.0}
                     step={0.01}
-                    on:change={() =>
-                        APPEARANCE.setHeadStructure(data.Cheeks_Bone_High)}
-                />
-            </svelte:fragment>
-
-            <svelte:fragment slot="secondary-start">{$LOCALE.BONEWIDTH_SUBTITLE}</svelte:fragment>
-
-            <svelte:fragment slot="secondary">
-                <Slider
-                    bind:value={data.Cheeks_Bone_Width.value}
-                    min={-1.0}
-                    max={1.0}
-                    step={0.01}
-                    on:change={() =>
-                        APPEARANCE.setHeadStructure(data.Cheeks_Bone_Width)}
+                    bind:width_locale={$LOCALE.BONEHEIGHT_SUBTITLE}
+                    bind:height_locale={$LOCALE.BONEWIDTH_SUBTITLE}
+                    on:change={() => {
+                        APPEARANCE.setHeadStructure(data.Cheeks_Bone_High);
+                        APPEARANCE.setHeadStructure(data.Cheeks_Bone_Width);
+                    }}
                 />
             </svelte:fragment>
 
@@ -215,35 +170,19 @@
 
         {#if data.Jaw_Bone_Width}
             <Wrapper label={$LOCALE.JAW_TITLE}>
-                <svelte:fragment slot="primary-start"
-                    >{$LOCALE.BONEWIDTH_SUBTITLE}</svelte:fragment
-                >
-
                 <svelte:fragment slot="primary">
-                    <Slider
-                        bind:value={data.Jaw_Bone_Width.value}
+                    <Percentage
+                        bind:x={data.Jaw_Bone_Width.value}
+                        bind:y={data.Jaw_Bone_Back_Lenght.value}
                         min={-1.0}
                         max={1.0}
                         step={0.01}
-                        on:change={() =>
-                            APPEARANCE.setHeadStructure(data.Jaw_Bone_Width)}
-                    />
-                </svelte:fragment>
-
-                <svelte:fragment slot="secondary-start"
-                    >{$LOCALE.BONELENGHT_SUBTITLE}</svelte:fragment
-                >
-
-                <svelte:fragment slot="secondary">
-                    <Slider
-                        bind:value={data.Jaw_Bone_Back_Lenght.value}
-                        min={-1.0}
-                        max={1.0}
-                        step={0.01}
-                        on:change={() =>
-                            APPEARANCE.setHeadStructure(
-                                data.Jaw_Bone_Back_Lenght,
-                            )}
+                        bind:width_locale={$LOCALE.BONEWIDTH_SUBTITLE}
+                        bind:height_locale={$LOCALE.BONELENGHT_SUBTITLE}
+                        on:change={() => {
+                            APPEARANCE.setHeadStructure(data.Jaw_Bone_Width);
+                            APPEARANCE.setHeadStructure(data.Jaw_Bone_Back_Lenght);
+                        }}
                     />
                 </svelte:fragment>
             </Wrapper>
@@ -251,63 +190,34 @@
 
         {#if data.Chin_Bone_Lowering}
             <Wrapper label={$LOCALE.CHIN_TITLE}>
-                <svelte:fragment slot="primary-start"
-                    >{$LOCALE.BONELOWERING_SUBTITLE}</svelte:fragment
-                >
-
                 <svelte:fragment slot="primary">
-                    <Slider
-                        bind:value={data.Chin_Bone_Lowering.value}
+                    <Percentage
+                        bind:x={data.Chin_Bone_Lowering.value}
+                        bind:y={data.Chin_Bone_Length.value}
                         min={-1.0}
                         max={1.0}
                         step={0.01}
-                        on:change={() =>
-                            APPEARANCE.setHeadStructure(
-                                data.Chin_Bone_Lowering,
-                            )}
+                        bind:width_locale={$LOCALE.BONELOWERING_SUBTITLE}
+                        bind:height_locale={$LOCALE.BONELENGHT_SUBTITLE}
+                        on:change={() => {
+                            APPEARANCE.setHeadStructure(data.Chin_Bone_Lowering);
+                            APPEARANCE.setHeadStructure(data.Chin_Bone_Length);
+                        }}
                     />
                 </svelte:fragment>
-
-                <svelte:fragment slot="secondary-start"
-                    >{$LOCALE.BONELENGHT_SUBTITLE}</svelte:fragment
-                >
-
                 <svelte:fragment slot="secondary">
-                    <Slider
-                        bind:value={data.Chin_Bone_Length.value}
+                    <Percentage
+                        bind:x={data.Chin_Bone_Width.value}
+                        bind:y={data.Chin_Hole.value}
                         min={-1.0}
                         max={1.0}
                         step={0.01}
-                        on:change={() =>
-                            APPEARANCE.setHeadStructure(data.Chin_Bone_Length)}
-                    />
-                </svelte:fragment>
-
-                <svelte:fragment slot="tertiary-start"
-                    >{$LOCALE.BONEWIDTH_SUBTITLE}</svelte:fragment
-                >
-
-                <svelte:fragment slot="tertiary">
-                    <Slider
-                        bind:value={data.Chin_Bone_Width.value}
-                        min={-1.0}
-                        max={1.0}
-                        step={0.01}
-                        on:change={() =>
-                            APPEARANCE.setHeadStructure(data.Chin_Bone_Width)}
-                    />
-                </svelte:fragment>
-
-                <svelte:fragment slot="quaternary-start">{$LOCALE.HOLE_SUBTITLE}</svelte:fragment>
-
-                <svelte:fragment slot="quaternary">
-                    <Slider
-                        bind:value={data.Chin_Hole.value}
-                        min={-1.0}
-                        max={1.0}
-                        step={0.01}
-                        on:change={() =>
-                            APPEARANCE.setHeadStructure(data.Chin_Hole)}
+                        bind:width_locale={$LOCALE.BONEWIDTH_SUBTITLE}
+                        bind:height_locale={$LOCALE.HOLE_SUBTITLE}
+                        on:change={() => {
+                            APPEARANCE.setHeadStructure(data.Chin_Bone_Width);
+                            APPEARANCE.setHeadStructure(data.Chin_Hole);
+                        }}
                     />
                 </svelte:fragment>
             </Wrapper>
