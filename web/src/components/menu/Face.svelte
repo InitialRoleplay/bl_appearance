@@ -5,12 +5,17 @@
     import Wrapper from '@components/micro/Wrapper.svelte';
     import { APPEARANCE, LOCALE } from '@stores/appearance';
     import type { TValue, THeadOverlay } from '@typings/apperance';
+    import Percentage from '@components/micro/Percentage.svelte';
+
+    let position = { x: 0.5, y: 0.5 };
+    function handleChange(event) {
+        const newValue = event.detail;
+        console.log('New position:', newValue);
+    }
 
     $: data = $APPEARANCE.headStructure;
     let eyeColor = ($APPEARANCE.headOverlay?.EyeColor as TValue) || null;
-
     $: headOverlay = $APPEARANCE.headOverlay as THeadOverlay;
-
     $: headOverlayTotal = $APPEARANCE.headOverlayTotal;
 </script>
 
@@ -104,31 +109,15 @@
 
     {#if data.EyeBrown_Height}
         <Wrapper label={$LOCALE.EYEBROW_TITLE}>
-            <svelte:fragment slot="primary-start">{$LOCALE.HEIGHT_SUBTITLE}</svelte:fragment>
-
-            <svelte:fragment slot="primary">
-                <Slider
-                    bind:value={data.EyeBrown_Height.value}
-                    min={-1.0}
-                    max={1.0}
-                    step={0.01}
-                    on:change={() =>
-                        APPEARANCE.setHeadStructure(data.EyeBrown_Height)}
-                />
-            </svelte:fragment>
-
-            <svelte:fragment slot="secondary-start">{$LOCALE.DEPTH_SUBTITLE}</svelte:fragment>
-
-            <svelte:fragment slot="secondary">
-                <Slider
-                    bind:value={data.EyeBrown_Forward.value}
-                    min={-1.0}
-                    max={1.0}
-                    step={0.01}
-                    on:change={() =>
-                        APPEARANCE.setHeadStructure(data.EyeBrown_Forward)}
-                />
-            </svelte:fragment>
+            <Percentage
+                slot="primary"
+                bind:value={position}
+                width={448}
+                height={150}
+                gridCellsX={8}
+                gridCellsY={8}
+                on:change={handleChange}
+            />
         </Wrapper>
     {/if}
 
