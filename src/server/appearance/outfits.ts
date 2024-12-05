@@ -48,10 +48,9 @@ onClientCallback('bl_appearance:server:renameOutfit', renameOutfit);
 exports('RenameOutfit', renameOutfit);
 
 async function deleteOutfit(src: number, id: number) {
-    const frameworkId = getFrameworkID(src);
     const result = await oxmysql.update(
-        'DELETE FROM outfits WHERE player_id = ? AND id = ?',
-        [frameworkId, id]
+        'DELETE FROM outfits WHERE id = ?',
+        [id]
     );
     return result > 0;
 }
