@@ -94,7 +94,7 @@
                         >
                     {/if}
                     <button
-                        on:click={() => handleOutfitAction('item', i)}
+                        on:click={() => handleOutfitAction('item', i, outfit)}
                         class="btn w-full">{$LOCALE.ITEMOUTFIT_TITLE}</button
                     >
                     <button
