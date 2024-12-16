@@ -27,7 +27,6 @@ exports('GetPlayerPedAppearance', async (frameworkID: string) => {
 })
 
 exports('InitialCreation', async (cb?: Function) => {
-    // The first argument needs to be type of TAppearanceZone meaning it needs a coords property, but in this case it's not used
     await openMenu({ type: "appearance", coords: [0, 0, 0, 0] }, true)
     if (cb) cb()
 })

@@ -13,7 +13,6 @@ let angleZ: number = 0.0;
 let targetCoords: Vector3 | null = null;
 let oldCam: Camera | null = null;
 let changingCam: boolean = false;
-let lastX: number = 0;
 let currentBone: keyof TCameraBones = 'head';
 
 const CameraBones: TCameraBones = {

@@ -26,12 +26,6 @@ export const requestModel = async (model: string | number): Promise<number> => {
     let modelHash: number = typeof model === 'number' ? model : GetHashKey(model)
 
     if (!IsModelValid(modelHash) && !IsModelInCdimage(modelHash)) {
-        // exports.bl_bridge.notify()({
-        //     title: 'Invalid model!',
-        //     type: 'error',
-        //     duration: 1000
-        // })
-
         console.warn(`attempted to load invalid model '${model}'`);
         return 0;
     }

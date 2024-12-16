@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
-    import { fade, fly, scale } from 'svelte/transition';
+    import { onMount, SvelteComponent } from 'svelte';
+    import { fade, fly } from 'svelte/transition';
     import Divider from './micro/Divider.svelte';
     import { SELECTED_TAB, LOCALE } from '@stores/appearance';
 
@@ -23,7 +23,7 @@
         };
     });
 
-    let icon = null;
+    let icon: typeof SvelteComponent | null = null;
 
     function getIconComponent() {
         return icon;

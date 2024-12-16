@@ -1,6 +1,7 @@
 import { oxmysql } from "@overextended/oxmysql";
-import { config, core, getFrameworkID, getPlayerData, onClientCallback } from "../utils";
+import { config, core, getFrameworkID, onClientCallback } from "../utils";
 import { Outfit } from "@typings/outfits";
+import { TAppearance } from "@typings/appearance";
 
 async function getOutfits(src: number, frameworkId: string) {
     const job = core.GetPlayer(src).job || { name: 'unknown', grade: { name: 'unknown' } }
@@ -29,7 +30,6 @@ async function getOutfits(src: number, frameworkId: string) {
 
     } catch (error) {
         console.error('An error occurred while fetching outfits:', error);
-        // Handle the error, e.g., return a default value or rethrow the error
         return [];
     }
 }
@@ -118,8 +118,46 @@ onClientCallback('bl_appearance:server:itemOutfit', async (src, data) => {
     player.addItem(outfitItem, 1, data)
 });
 
-core.RegisterUsableItem(outfitItem, async (source: number, slot: number, metadata: { outfit: Outfit, label: string }) => {
-    const player = getPlayerData(source)
-    if (player?.removeItem(outfitItem, 1, slot))
-        emitNet('bl_appearance:client:useOutfitItem', source, metadata.outfit)
-})
+onClientCallback('bl_appearance:server:payAppearance', async (src: number, appearance: TAppearance, original: TAppearance, outfit: boolean) => {
+    const player = core.GetPlayer(src)
+
+    let hasMoney = (player.getBalance('cash') >= config.outfitCost) ? 'cash' : (player.getBalance('bank') >= config.outfitCost) ? 'bank' : false
+    if (!hasMoney) {
+        return false
+    }
+    player.removeBalance(hasMoney, config.outfitCost)
+
+    const clothes = {
+        drawables: Array.isArray(appearance.drawables) ? appearance.drawables : [],
+        props: Array.isArray(appearance.props) ? appearance.props : [],
+        headOverlay: Array.isArray(appearance.headOverlay) ? appearance.headOverlay : [],
+    }
+
+    const originalClothes = {
+        drawables: Array.isArray(original.drawables) ? original.drawables : [],
+        props: Array.isArray(original.props) ? original.props : [],
+        headOverlay: Array.isArray(original.headOverlay) ? original.headOverlay : [],
+    }
+
+    const diff = {
+        drawables: clothes.drawables.filter((item, index) => originalClothes.drawables[index] !== item),
+        props: clothes.props.filter((item, index) => originalClothes.props[index] !== item),
+        headOverlay: clothes.headOverlay.filter((item, index) => originalClothes.headOverlay[index] !== item),
+    }
+
+    if (!outfit) {
+        diff.drawables.forEach((item) => {
+            player.addItem('clothes_' + item.id, 1, item)
+        })
+        diff.props.forEach((item) => {
+            player.addItem('clothes_' + item.id, 1, item)
+        })
+    } else {
+        player.addItem(outfitItem, 1, {
+            outfit: {
+                props: clothes.props,
+                drawables: clothes.drawables,
+            },
+        })
+    }
+});

@@ -32,7 +32,13 @@
 
     let limit = tweened(0);
 
-    const pointIcon = (centerX, centerY, radius, angle, limit) => {
+    const pointIcon = (
+        centerX: number,
+        centerY: number,
+        radius: number,
+        angle: number,
+        limit: number,
+    ) => {
         angle = angle + limit / 2 + limit;
         const radians = degToRad(angle);
         const x = centerX + radius * Math.cos(radians);
@@ -40,7 +46,7 @@
         return [x.toPrecision(5), y.toPrecision(5)];
     };
 
-    let iconsMap = {};
+    let iconsMap: { [key: string]: any } = {};
     onMount(async () => {
         for (const tab of $TABS) {
             const iconModule = await import(`./icons/${tab.icon}.svelte`);
@@ -64,11 +70,9 @@
     }
 
     const innerSize = 120;
-
     const innerRadius = innerSize / 2;
+    const limitRef: number[] = [112, 107, 100, 100, 97, 93, 93];
 
-        // Im sure there is a proper formula for getting the angles but this is a good enough approximation by just looking at it
-        const limitRef: number[] = [112, 107, 100, 100, 97, 93, 93]; 
     onMount(() => {
         setTimeout(() => {
             let target = 90;
@@ -81,7 +85,7 @@
         }, 250);
     });
 
-    let modal: 'close' | 'save' = null;
+    let modal: 'close' | 'save' | null = null;
 
     const toggleOrder = [
         {
@@ -137,7 +141,6 @@
             icon: 'IconShoes',
         },
     ];
-
 </script>
 
 <nav class=" relative z-[9999 w-fit h-fit rounded-full">
@@ -250,7 +253,11 @@
                 on:click={() => {
                     const data = $APPEARANCE[type][id];
                     let hookData = [];
-                    for (let i = 0; i < hook?.drawables?.length; i++) {
+                    for (
+                        let i = 0;
+                        hook?.drawables && i < hook.drawables.length;
+                        i++
+                    ) {
                         const d = hook.drawables[i];
                         hookData.push($APPEARANCE.drawables[d.id]);
                     }
@@ -333,7 +340,12 @@
                         class="btn-base bg-success/50 border-[0.25vh] border-success/50 w-[10vh] h-[5vh] grid place-items-center"
                         on:click={() => {
                             if (modal === 'save') {
-                                SendEvent(Send.save, $APPEARANCE);
+                                SendEvent(Send.save, {
+                                    original: $ORIGINAL_APPEARANCE,
+                                    appearance: $APPEARANCE,
+                                    isCreation: $TABS.length === 7,
+                                    isTattoo: $TABS.length === 1 && $TABS[0].id === 'tattoos',
+                                });
                             } else {
                                 SendEvent(Send.cancel, $ORIGINAL_APPEARANCE);
                             }

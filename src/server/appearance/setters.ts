@@ -1,5 +1,5 @@
 import { TAppearance, TClothes, TSkin } from '@typings/appearance';
-import { getFrameworkID, onClientCallback, } from '../utils';
+import { config, core, getFrameworkID, onClientCallback, } from '../utils';
 import { oxmysql } from '@overextended/oxmysql';
 import { TTattoo } from '@typings/tattoos';
 
@@ -50,7 +50,6 @@ onClientCallback('bl_appearance:server:saveTattoos', saveTattoos);
 exports('SavePlayerTattoos', function(id, tattoos) {
     return saveTattoos(null, id, tattoos)
 });
-
 
 export async function saveAppearance(src: number, frameworkId: string, appearance: TAppearance, force?: boolean) {
     if (!force && src && frameworkId && getFrameworkID(src) !== frameworkId) console.warn('You are trying to save an appearance for a different player', src, frameworkId);

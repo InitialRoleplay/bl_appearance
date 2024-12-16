@@ -55,8 +55,6 @@ export async function openMenu(zone: TAppearanceZone | TAppearanceZone['type'], 
     const appearance = await getAppearance(pedHandle)
 
     startCamera()
-
-
     sendNUIEvent(Send.data, {
         tabs,
         appearance,
@@ -73,7 +71,6 @@ export async function openMenu(zone: TAppearanceZone | TAppearanceZone['type'], 
     sendNUIEvent(Send.visible, true)
 
     open = true
-
     exports.bl_appearance.hideHud(true)
 
     if (promise) {
@@ -149,8 +146,7 @@ export function closeMenu() {
     SetNuiFocus(false, false)
     sendNUIEvent(Send.visible, false)
 
-
-    exports.bl_appearance.hideHud(false)
+    exports.bl_appearance.hideHud(true)
 
     if (resolvePromise) {
         resolvePromise();
