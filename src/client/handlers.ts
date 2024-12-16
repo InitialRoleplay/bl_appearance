@@ -6,6 +6,7 @@ import {
   setHeadBlend,
   setHeadOverlay,
   setModel,
+  setPedAppearance,
   setPedClothes,
   setPedTattoos,
   setPlayerPedAppearance,
@@ -67,6 +68,9 @@ RegisterNuiCallback(
       return;
     }
 
+    closeMenu();
+    await delay(100);
+
     const alert = await ox_lib.alertDialog({
       header: "Magasin",
       content: "Voulez-vous des items ou un outfit ?",
@@ -82,10 +86,10 @@ RegisterNuiCallback(
       "bl_appearance:server:payAppearance",
       newAppearance,
       data.original,
-      alert
+      alert == 'confirm'
     );
 
-    closeMenu();
+    setPedAppearance(ped, data.original);
     cb(1);
   }
 );

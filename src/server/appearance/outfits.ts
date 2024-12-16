@@ -1,7 +1,7 @@
 import { oxmysql } from "@overextended/oxmysql";
 import { config, core, getFrameworkID, onClientCallback } from "../utils";
 import { Outfit } from "@typings/outfits";
-import { TAppearance } from "@typings/appearance";
+import { TAppearance, TDrawables, TValue } from "@typings/appearance";
 
 async function getOutfits(src: number, frameworkId: string) {
     const job = core.GetPlayer(src).job || { name: 'unknown', grade: { name: 'unknown' } }
@@ -127,36 +127,39 @@ onClientCallback('bl_appearance:server:payAppearance', async (src: number, appea
     }
     player.removeBalance(hasMoney, config.outfitCost)
 
-    const clothes = {
-        drawables: Array.isArray(appearance.drawables) ? appearance.drawables : [],
-        props: Array.isArray(appearance.props) ? appearance.props : [],
-        headOverlay: Array.isArray(appearance.headOverlay) ? appearance.headOverlay : [],
-    }
-
-    const originalClothes = {
-        drawables: Array.isArray(original.drawables) ? original.drawables : [],
-        props: Array.isArray(original.props) ? original.props : [],
-        headOverlay: Array.isArray(original.headOverlay) ? original.headOverlay : [],
-    }
-
-    const diff = {
-        drawables: clothes.drawables.filter((item, index) => originalClothes.drawables[index] !== item),
-        props: clothes.props.filter((item, index) => originalClothes.props[index] !== item),
-        headOverlay: clothes.headOverlay.filter((item, index) => originalClothes.headOverlay[index] !== item),
-    }
-
     if (!outfit) {
+        const diff = {
+            drawables: Object.entries(appearance.drawables)
+                .filter(([key, item]) => {
+                    const originalItem = original.drawables[key];
+                    return !originalItem ||
+                        item.value !== originalItem.value ||
+                        item.texture !== originalItem.texture;
+                })
+                .map(([key, item]) => ({ ...item, id: key })),
+
+            props: Object.entries(appearance.props)
+                .filter(([key, item]) => {
+                    const originalItem = original.props[key];
+                    return !originalItem ||
+                        item.value !== originalItem.value ||
+                        item.texture !== originalItem.texture;
+                })
+                .map(([key, item]) => ({ ...item, id: key }))
+        }
+
         diff.drawables.forEach((item) => {
             player.addItem('clothes_' + item.id, 1, item)
         })
+
         diff.props.forEach((item) => {
             player.addItem('clothes_' + item.id, 1, item)
         })
     } else {
         player.addItem(outfitItem, 1, {
             outfit: {
-                props: clothes.props,
-                drawables: clothes.drawables,
+                props: appearance.props,
+                drawables: appearance.drawables,
             },
         })
     }
