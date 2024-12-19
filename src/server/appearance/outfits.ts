@@ -149,11 +149,23 @@ onClientCallback('bl_appearance:server:payAppearance', async (src: number, appea
         }
 
         diff.drawables.forEach((item) => {
-            player.addItem('clothes_' + item.id, 1, item)
+            player.addItem('clothes_' + item.id, 1, {
+                id: item.id,
+                index: item.index,
+                type: 'component',
+                value: item.value,
+                texture: item.texture,
+            })
         })
 
         diff.props.forEach((item) => {
-            player.addItem('clothes_' + item.id, 1, item)
+            player.addItem('clothes_' + item.id, 1, {
+                id: item.id,
+                index: item.index,
+                type: 'prop',
+                value: item.value,
+                texture: item.texture,
+            })
         })
     } else {
         player.addItem(outfitItem, 1, {
